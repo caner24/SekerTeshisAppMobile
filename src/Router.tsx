@@ -6,15 +6,22 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import LoginScreen from './pages/Login/Login';
 import RegisterScreen from './pages/Register/Register';
 import HomeScreen from './pages/Home/Home';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const value = async () => {
-  await AsyncStorage.getItem('isLoggedIn');
-};
+// import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useSelector} from 'react-redux';
 
 const Tab = createBottomTabNavigator();
 export default function Router() {
-  if (value != 'loggedIn') {
+  const userLoginInfo = useSelector(state => state.user);
+
+  // const [isLoggedIn, setLoggedIn] = React.useState(null);
+
+  // var checkLogged = async () => {
+  //  var data = await AsyncStorage.getItem('loginInfo');
+  // setLoggedIn(data != null ? JSON.parse(data) : null);
+  // };
+  // checkLogged();
+
+  if (userLoginInfo == null) {
     return (
       <NavigationContainer>
         <Tab.Navigator>
@@ -58,26 +65,6 @@ export default function Router() {
       </NavigationContainer>
     );
   } else {
-    return (
-      <NavigationContainer>
-        <Tab.Navigator
-          screenOptions={({route}) => ({
-            tabBarIcon: ({focused, color, size}) => {
-              let iconName;
-
-              if (route.name === 'Home') {
-                iconName = focused
-                  ? 'ios-information-circle'
-                  : 'ios-information-circle-outline';
-              }
-              return <Ionicons name={iconName} size={size} color={color} />;
-            },
-            tabBarActiveTintColor: 'tomato',
-            tabBarInactiveTintColor: 'gray',
-          })}>
-          <Tab.Screen name="Home" component={HomeScreen} />
-        </Tab.Navigator>
-      </NavigationContainer>
-    );
+    return <HomeScreen />;
   }
 }
