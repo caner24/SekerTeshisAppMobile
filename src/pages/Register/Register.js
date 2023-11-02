@@ -1,9 +1,29 @@
 import React from 'react';
 import {View, Text} from 'react-native';
 import ValidationInput from '../../components/ValidationInput/ValidationInput';
-import Config from 'react-native-config';
 import styles from './Register.style';
 import axios from 'axios';
+
+function RegisterUser(email, password) {
+  const datas = {
+    MailAdress: email,
+  };
+
+  axios
+    .post(`http://192.168.1.4:82/Account/forgottonPassword`, datas)
+    .then(response => {
+      // Handle the success response here
+      console.log('User registration successful:', response.data);
+    })
+    .catch(error => {
+      if (error.response) {
+        console.log('Request failed with status code', error.response.status);
+        console.log('Response data:', error.response.data.errors);
+      } else {
+        console.log('An error occurred:', error.message);
+      }
+    });
+}
 
 export default function Register() {
   return (
@@ -14,7 +34,7 @@ export default function Register() {
       <View style={styles.text_input}>
         <ValidationInput
           pType={true}
-          onSubmit={() => console.log('Kayit Alindi')}
+          onSubmit={(email, password) => RegisterUser(email, password)}
         />
       </View>
     </View>
