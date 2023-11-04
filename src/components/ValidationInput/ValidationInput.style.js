@@ -8,7 +8,8 @@ export default StyleSheet.create({
   },
   textInput: {
     backgroundColor: 'white',
-    borderRadius:10,
+    borderRadius: 10,
+    color: 'black',
   },
   errorText: {
     fontSize: 20,
