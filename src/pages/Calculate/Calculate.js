@@ -16,7 +16,7 @@ export default function Calculate() {
           source={require('../../assets/ezgif-2-25b1f30692.gif')}
         />
 
-        <Slider min={1} max={100} values={[10, 87]} />
+       
 
         <View style={styles.range_style}>
           <RangePart

@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  KeyboardAvoidingView,
-  Text,
-  View,
-  ActivityIndicator,
-  Pressable,
-  Button,
-} from 'react-native';
+import {Text, View, ActivityIndicator, Pressable} from 'react-native';
 import ValidationInput from '../../components/ValidationInput/ValidationInput';
 import styles from './Login.style';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -15,7 +8,6 @@ import {
   ALERT_TYPE,
   Dialog,
   AlertNotificationRoot,
-  Toast,
 } from 'react-native-alert-notification';
 import Modal from 'react-native-modal';
 
@@ -53,7 +45,6 @@ export default function Login() {
     )
       .then(response => response.json())
       .then(result => {
-        console.log(result);
         if (result.message != 'Giris') {
           return Dialog.show({
             type: ALERT_TYPE.DANGER,
@@ -62,9 +53,9 @@ export default function Login() {
             button: 'kapat',
           });
         } else {
-          var data = {beerer: result.AccessToken, id: result.UserId};
+          var data = {bearer: result.accesToken, id: result.userId};
           // await AsyncStorage.setItem('loginInfo', JSON.stringify(data));
-          handleUserLogin(JSON.stringify(data));
+          handleUserLogin(data);
         }
       })
       .catch(error => console.log('error', error));
@@ -73,6 +64,7 @@ export default function Login() {
   }
 
   function ForgetPassword(email) {
+    setIndicator(true);
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append(
@@ -97,6 +89,7 @@ export default function Login() {
     )
       .then(response => response.json())
       .then(result => {
+        setIndicator(false);
         console.log(result);
         if (result.Message) {
           return Dialog.show({
@@ -148,6 +141,7 @@ export default function Login() {
                 </Text>
               </Pressable>
               <View style={{marginTop: '10%'}}></View>
+              {indicator && <ActivityIndicator size="large" color="#0000ff" />}
               <ValidationInput
                 forgetEmail={true}
                 onSubmit={async (email, password) => {
@@ -164,7 +158,7 @@ export default function Login() {
         <View style={styles.text_input}>
           <ValidationInput
             onSubmit={async (email, password) => {
-              LoginUser(email, password);
+              await LoginUser(email, password);
             }}
           />
           <Pressable

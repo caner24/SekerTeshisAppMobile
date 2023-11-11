@@ -30,6 +30,7 @@ export default function RangePart({
           right: '3%',
           textAlign: 'center',
           color: 'white',
+          fontSize: 12.5,
         }}>
         {diabetType}
       </Text>

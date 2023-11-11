@@ -1,20 +1,127 @@
 import React from 'react';
-import {View, Text, Image, Pressable} from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  Pressable,
+  ActivityIndicator,
+  TouchableOpacity,
+  DevSettings,
+} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
-import Slider from 'react-native-a11y-slider';
+import Slider from '@react-native-community/slider';
 import RangePart from '../../components/RangePart/RangePart';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-
+import {useSelector} from 'react-redux';
 import Exercises from './../Exercise/Exercise';
 import Food from './../Food/Food';
 import Statistics from './../Statistics/Statistics';
+import {
+  ALERT_TYPE,
+  Dialog,
+  AlertNotificationRoot,
+} from 'react-native-alert-notification';
 
 const Tab = createBottomTabNavigator();
 
 function HomeScreen() {
+  var [slider, SetSlider] = React.useState('0');
+  var [isDisabled, SetDisabled] = React.useState(false);
+  var [loading, setLoading] = React.useState(true);
+  var [hungry, setHungry] = React.useState('yellow');
+  var [full, setFull] = React.useState('yellow');
+  const userDet = useSelector(state => state.user);
+
+  async function CalculateSugar() {
+    var myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
+    myHeaders.append(
+      'Cookie',
+      'ARRAffinity=4b3e9d7243043145f30ef214452b71163b8defc4e171d81090f8c904e96ebe98; ARRAffinitySameSite=4b3e9d7243043145f30ef214452b71163b8defc4e171d81090f8c904e96ebe98',
+    );
+
+    var raw = JSON.stringify({
+      diabetesId: userDet.id,
+      measureType: hungry === 'yellow' ? 'Full' : 'Hungry',
+      measureValue: parseInt(slider),
+    });
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow',
+    };
+
+    try {
+      const response = await fetch(
+        'https://sekerteshisappwebapi20231104135624.azurewebsites.net/api/home/calculateSugar',
+        requestOptions,
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const result = await response.json();
+      console.log(result);
+
+      return DevSettings.reload();
+    } catch (error) {
+      console.log('Fetch error:', error);
+      return Dialog.show({
+        type: ALERT_TYPE.ERROR,
+        title: 'Hata',
+        textBody: 'Bir hata oluştu.',
+        button: 'kapat',
+      });
+    }
+  }
+
+  React.useEffect(() => {
+    var myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
+    myHeaders.append(
+      'Cookie',
+      'ARRAffinity=4b3e9d7243043145f30ef214452b71163b8defc4e171d81090f8c904e96ebe98; ARRAffinitySameSite=4b3e9d7243043145f30ef214452b71163b8defc4e171d81090f8c904e96ebe98',
+    );
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    fetch(
+      `https://sekerteshisappwebapi20231104135624.azurewebsites.net/api/home/getCalculateStatus?Id=${userDet.id}`,
+      requestOptions,
+    )
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+        if (result.isLockDown) SetDisabled(true);
+      })
+      .catch(error => console.log('error', error));
+    setLoading(false);
+  }, []);
+  if (loading) {
+    return (
+      <View
+        style={{
+          backgroundColor: 'black',
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
   return (
     <View style={{backgroundColor: 'black', flex: 1}}>
       <View>
@@ -46,7 +153,65 @@ function HomeScreen() {
           source={require('../../assets/ezgif-2-25b1f30692.gif')}
         />
 
-        <Slider min={1} max={100} values={[10, 87]} />
+        <Slider
+          style={{
+            marginTop: '1%',
+            width: '100%',
+            height: 40,
+            backgroundColor: 'black',
+          }}
+          minimumValue={0}
+          maximumValue={126}
+          thumbTintColor="white"
+          minimumTrackTintColor="yellow"
+          maximumTrackTintColor="white"
+          onValueChange={val => {
+            SetSlider(val);
+          }}
+        />
+        <Text>{slider}</Text>
+        <View
+          style={{
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'row',
+            justifyContent: 'space-around',
+          }}>
+          <TouchableOpacity
+            onPress={() => {
+              if (hungry == 'yellow') {
+                setHungry('white');
+                setFull('yellow');
+              } else setHungry('yellow');
+            }}
+            style={{
+              backgroundColor: 'black',
+              borderColor: `${hungry}`,
+              borderWidth: 3,
+              width: '45%',
+              padding: '2%',
+              borderRadius: 10,
+            }}>
+            <Text style={{textAlign: 'center', color: 'yellow'}}>Aç</Text>
+          </TouchableOpacity>
+          <Pressable
+            onPress={() => {
+              if (full == 'yellow') {
+                setFull('white');
+                setHungry('yellow');
+              } else setFull('yellow');
+            }}
+            style={{
+              backgroundColor: 'black',
+              borderColor: `${full}`,
+              borderWidth: 3,
+              width: '45%',
+              padding: '2%',
+              borderRadius: 10,
+            }}>
+            <Text style={{textAlign: 'center', color: 'yellow'}}>Tok</Text>
+          </Pressable>
+        </View>
 
         <View
           style={{
@@ -85,6 +250,7 @@ function HomeScreen() {
         </View>
       </View>
       <Pressable
+        disabled={isDisabled === true ? true : false}
         style={{
           width: '100%',
           padding: '1%',
@@ -92,7 +258,7 @@ function HomeScreen() {
           marginBottom: '5%',
           backgroundColor: 'yellow',
         }}
-        onPress={() => console.log('sa')}>
+        onPress={async () => await CalculateSugar()}>
         <Text
           style={{
             backgroundColor: 'black',
