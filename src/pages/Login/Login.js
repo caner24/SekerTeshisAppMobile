@@ -46,6 +46,7 @@ export default function Login() {
       .then(response => response.json())
       .then(result => {
         if (result.message != 'Giris') {
+          console.log(result);
           return Dialog.show({
             type: ALERT_TYPE.DANGER,
             title: 'Hata',

@@ -16,8 +16,6 @@ export default function Calculate() {
           source={require('../../assets/ezgif-2-25b1f30692.gif')}
         />
 
-       
-
         <View style={styles.range_style}>
           <RangePart
             color="#FFF5E0"

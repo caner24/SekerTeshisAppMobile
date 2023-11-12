@@ -24,9 +24,9 @@ export default function Register() {
     );
 
     var raw = JSON.stringify({
-      email: 'canombeno24@gmail.com',
+      email: userEmail,
       password: userPassword,
-      userName: 'malimben245',
+      userName: userEmail.substring(0, userEmail.indexOf('@')),
     });
 
     var requestOptions = {
@@ -39,7 +39,7 @@ export default function Register() {
       'https://sekerteshisappwebapi20231104135624.azurewebsites.net/api/account/register',
       requestOptions,
     )
-      .then(response => response.text())
+      .then(response => response.json())
       .then(result => {
         console.log(result);
         if (result.isCreated.succeeded) {

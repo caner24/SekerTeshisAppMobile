@@ -33,9 +33,12 @@ function HomeScreen() {
   var [loading, setLoading] = React.useState(true);
   var [hungry, setHungry] = React.useState('yellow');
   var [full, setFull] = React.useState('yellow');
+
+  var [calculate, setCalculate] = React.useState(false);
   const userDet = useSelector(state => state.user);
 
   async function CalculateSugar() {
+    setCalculate(true);
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
@@ -67,10 +70,14 @@ function HomeScreen() {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
-      const result = await response.json();
-      console.log(result);
-
-      return DevSettings.reload();
+      SetDisabled(true);
+      setCalculate(false);
+      return Dialog.show({
+        type: ALERT_TYPE.SUCCESS,
+        title: 'Alindi',
+        textBody: 'Şeker ölçümünüz alindi !.',
+        button: 'kapat',
+      });
     } catch (error) {
       console.log('Fetch error:', error);
       return Dialog.show({
@@ -123,156 +130,161 @@ function HomeScreen() {
     );
   }
   return (
-    <View style={{backgroundColor: 'black', flex: 1}}>
-      <View>
-        <Text
-          style={{
-            color: 'white',
-            fontSize: 50,
-            fontWeight: 'bold',
-            textAlign: 'center',
-            fontStyle: 'italic',
-          }}>
-          Şeker Ölçüm
-        </Text>
-      </View>
-      <View
-        style={{
-          backgroundColor: 'black',
-          display: 'flex',
-          flex: 1,
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        <Image
-          style={{
-            width: '100%',
-            height: '25 %',
-            resizeMode: 'contain',
-          }}
-          source={require('../../assets/ezgif-2-25b1f30692.gif')}
-        />
-
-        <Slider
-          style={{
-            marginTop: '1%',
-            width: '100%',
-            height: 40,
-            backgroundColor: 'black',
-          }}
-          minimumValue={0}
-          maximumValue={126}
-          thumbTintColor="white"
-          minimumTrackTintColor="yellow"
-          maximumTrackTintColor="white"
-          onValueChange={val => {
-            SetSlider(val);
-          }}
-        />
-        <Text>{slider}</Text>
+    <AlertNotificationRoot>
+      <View style={{backgroundColor: 'black', flex: 1}}>
+        <View>
+          <Text
+            style={{
+              color: 'white',
+              fontSize: 50,
+              fontWeight: 'bold',
+              textAlign: 'center',
+              fontStyle: 'italic',
+            }}>
+            Şeker Ölçüm
+          </Text>
+        </View>
         <View
           style={{
-            width: '100%',
+            backgroundColor: 'black',
             display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-around',
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
           }}>
-          <TouchableOpacity
-            onPress={() => {
-              if (hungry == 'yellow') {
-                setHungry('white');
-                setFull('yellow');
-              } else setHungry('yellow');
-            }}
+          <Image
             style={{
-              backgroundColor: 'black',
-              borderColor: `${hungry}`,
-              borderWidth: 3,
-              width: '45%',
-              padding: '2%',
-              borderRadius: 10,
-            }}>
-            <Text style={{textAlign: 'center', color: 'yellow'}}>Aç</Text>
-          </TouchableOpacity>
-          <Pressable
-            onPress={() => {
-              if (full == 'yellow') {
-                setFull('white');
-                setHungry('yellow');
-              } else setFull('yellow');
+              width: '100%',
+              height: '25 %',
+              resizeMode: 'contain',
             }}
+            source={require('../../assets/ezgif-2-25b1f30692.gif')}
+          />
+
+          <Slider
             style={{
+              marginTop: '1%',
+              width: '100%',
+              height: 40,
               backgroundColor: 'black',
-              borderColor: `${full}`,
-              borderWidth: 3,
-              width: '45%',
-              padding: '2%',
-              borderRadius: 10,
+            }}
+            minimumValue={0}
+            maximumValue={126}
+            thumbTintColor="white"
+            minimumTrackTintColor="yellow"
+            maximumTrackTintColor="white"
+            onValueChange={val => {
+              SetSlider(val);
+            }}
+          />
+          <Text>{slider}</Text>
+          <View
+            style={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-around',
             }}>
-            <Text style={{textAlign: 'center', color: 'yellow'}}>Tok</Text>
-          </Pressable>
+            <TouchableOpacity
+              onPress={() => {
+                if (hungry == 'yellow') {
+                  setHungry('white');
+                  setFull('yellow');
+                } else setHungry('yellow');
+              }}
+              style={{
+                backgroundColor: 'black',
+                borderColor: `${hungry}`,
+                borderWidth: 3,
+                width: '45%',
+                padding: '2%',
+                borderRadius: 10,
+              }}>
+              <Text style={{textAlign: 'center', color: 'yellow'}}>Aç</Text>
+            </TouchableOpacity>
+            <Pressable
+              onPress={() => {
+                if (full == 'yellow') {
+                  setFull('white');
+                  setHungry('yellow');
+                } else setFull('yellow');
+              }}
+              style={{
+                backgroundColor: 'black',
+                borderColor: `${full}`,
+                borderWidth: 3,
+                width: '45%',
+                padding: '2%',
+                borderRadius: 10,
+              }}>
+              <Text style={{textAlign: 'center', color: 'yellow'}}>Tok</Text>
+            </Pressable>
+          </View>
+
+          <View
+            style={{
+              marginTop: '10%',
+              width: '100%',
+              height: '5%',
+              display: 'flex',
+              flexDirection: 'row',
+              backgroundColor: 'white',
+              justifyContent: 'space-between',
+            }}>
+            <RangePart
+              color="#FFF5E0"
+              rangeVal={50}
+              rangeVal2={70}
+              diabetType={'Hipoglisemi'}
+            />
+            <RangePart
+              color="#FF6969"
+              rangeVal={70}
+              rangeVal2={100}
+              diabetType={'Normal'}
+            />
+            <RangePart
+              color="red"
+              rangeVal={100}
+              rangeVal2={125}
+              diabetType={'Gizli Şeker'}
+            />
+            <RangePart
+              color="#BB2525"
+              rangeVal={126}
+              rangeVal2={'...'}
+              diabetType={'Diyabet'}
+            />
+          </View>
         </View>
 
-        <View
+        {calculate && <ActivityIndicator size="large" color="#0000ff" />}
+
+        <Pressable
+          disabled={isDisabled === true ? true : false}
           style={{
-            marginTop: '10%',
             width: '100%',
-            height: '5%',
-            display: 'flex',
-            flexDirection: 'row',
-            backgroundColor: 'white',
-            justifyContent: 'space-between',
-          }}>
-          <RangePart
-            color="#FFF5E0"
-            rangeVal={50}
-            rangeVal2={70}
-            diabetType={'Hipoglisemi'}
-          />
-          <RangePart
-            color="#FF6969"
-            rangeVal={70}
-            rangeVal2={100}
-            diabetType={'Normal'}
-          />
-          <RangePart
-            color="red"
-            rangeVal={100}
-            rangeVal2={125}
-            diabetType={'Gizli Şeker'}
-          />
-          <RangePart
-            color="#BB2525"
-            rangeVal={126}
-            rangeVal2={'...'}
-            diabetType={'Diyabet'}
-          />
-        </View>
-      </View>
-      <Pressable
-        disabled={isDisabled === true ? true : false}
-        style={{
-          width: '100%',
-          padding: '1%',
-          borderRadius: 20,
-          marginBottom: '5%',
-          backgroundColor: 'yellow',
-        }}
-        onPress={async () => await CalculateSugar()}>
-        <Text
-          style={{
-            backgroundColor: 'black',
+            padding: '1%',
             borderRadius: 20,
-            textAlign: 'center',
-            fontWeight: 'bold',
-            fontSize: 20,
+            marginBottom: '5%',
+            backgroundColor: 'yellow',
+          }}
+          onPress={async () => await CalculateSugar()}>
+          <Text
+            style={{
+              backgroundColor: 'black',
+              borderRadius: 20,
+              textAlign: 'center',
+              fontWeight: 'bold',
+              fontSize: 20,
 
-            color: 'white',
-          }}>
-          Gönder
-        </Text>
-      </Pressable>
-    </View>
+              color: 'white',
+            }}>
+            Gönder
+          </Text>
+        </Pressable>
+      </View>
+    </AlertNotificationRoot>
   );
 }
 
