@@ -33,6 +33,7 @@ function HomeScreen() {
   var [loading, setLoading] = React.useState(true);
   var [hungry, setHungry] = React.useState('yellow');
   var [full, setFull] = React.useState('yellow');
+  var [isLockDown, setLockDown] = React.useState(false);
 
   var [calculate, setCalculate] = React.useState(false);
   const userDet = useSelector(state => state.user);
@@ -111,6 +112,7 @@ function HomeScreen() {
       .then(response => response.json())
       .then(result => {
         console.log(result);
+        setLockDown(result.isLockDown);
         if (result.isLockDown) SetDisabled(true);
       })
       .catch(error => console.log('error', error));
@@ -278,9 +280,11 @@ function HomeScreen() {
               fontWeight: 'bold',
               fontSize: 20,
 
-              color: 'white',
+              color: isLockDown === true ? 'red' : 'white',
             }}>
-            Gönder
+            {isLockDown === true
+              ? 'Son ölçüm üzerinden 7 saat geçmeli'
+              : 'Gönder'}
           </Text>
         </Pressable>
       </View>

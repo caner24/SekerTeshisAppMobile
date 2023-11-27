@@ -1,3 +1,4 @@
+import React from 'react';
 import {View, Text, Dimensions} from 'react-native';
 import {
   LineChart,
@@ -7,8 +8,44 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from 'react-native-chart-kit';
+import {useSelector} from 'react-redux';
 
 export default function Statistics() {
+  const [userSituation, setUserSituation] = React.useState('BELİRSİZ');
+  const [userData, setUserData] = React.useState([]);
+  const userDet = useSelector(state => state.user);
+
+  React.useEffect(() => {
+    var myHeaders = new Headers();
+    myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
+    myHeaders.append(
+      'Cookie',
+      'ARRAffinity=7728a9db7a843ce19ed47ff831421589468bd2f1f7c07638fcce4ad2da6697ff; ARRAffinitySameSite=7728a9db7a843ce19ed47ff831421589468bd2f1f7c07638fcce4ad2da6697ff',
+    );
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow',
+    };
+
+    fetch(
+      `https://sekerteshisappwebapi20231104135624.azurewebsites.net/api/home/getLast7Diabetes?UserId=${userDet.id}`,
+      requestOptions,
+    )
+      .then(response => response.json())
+      .then(result => {
+        if (result.diabetesDetail[0].situation != null) {
+          console.log(result);
+
+          setUserData(result.diabetesDetail);
+          console.log(userData[0].measureValue);
+          setUserSituation(result.diabetesDetail[0].situation);
+        }
+      })
+      .catch(error => console.log('error', error));
+  }, []);
+
   return (
     <View style={{flex: 1, backgroundColor: 'black'}}>
       <Text
@@ -51,12 +88,13 @@ export default function Statistics() {
             datasets: [
               {
                 data: [
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
-                  Math.random() * 100,
+                  userData.length >= 1 ? userData[0].measureValue : 0,
+                  userData.length >= 2 ? userData[1].measureValue : 0,
+                  userData.length >= 3 ? userData[2].measureValue : 0,
+                  userData.length >= 4 ? userData[3].measureValue : 0,
+                  userData.length >= 5 ? userData[4].measureValue : 0,
+                  userData.length >= 6 ? userData[5].measureValue : 0,
+                  userData.length >= 7 ? userData[6].measureValue : 0,
                 ],
               },
             ],
@@ -102,7 +140,7 @@ export default function Statistics() {
             Risk Durumu :
           </Text>
           <Text style={{fontSize: 15, color: 'red', fontStyle: 'italic'}}>
-            ŞEKER HASTASI
+            {userSituation}
           </Text>
         </View>
       </View>
