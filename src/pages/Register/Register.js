@@ -36,7 +36,7 @@ export default function Register() {
     };
 
     await fetch(
-      'https://sekerteshisappwebapi20231104135624.azurewebsites.net/api/account/register',
+      'https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/account/register',
       requestOptions,
     )
       .then(response => response.json())

@@ -63,7 +63,7 @@ function HomeScreen() {
 
     try {
       const response = await fetch(
-        'https://sekerteshisappwebapi20231104135624.azurewebsites.net/api/home/calculateSugar',
+        'https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/home/calculateSugar',
         requestOptions,
       );
 

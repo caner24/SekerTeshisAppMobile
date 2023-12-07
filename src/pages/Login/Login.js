@@ -40,7 +40,7 @@ export default function Login() {
     };
 
     await fetch(
-      'https://sekerteshisappwebapi20231104135624.azurewebsites.net/api/account/login',
+      'https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/account/login',
       requestOptions,
     )
       .then(response => response.json())

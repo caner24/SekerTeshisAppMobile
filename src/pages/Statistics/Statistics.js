@@ -30,7 +30,7 @@ export default function Statistics() {
     };
 
     fetch(
-      `https://sekerteshisappwebapi20231104135624.azurewebsites.net/api/home/getLast7Diabetes?UserId=${userDet.id}`,
+      `https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/home/getLast7Diabetes?UserId=${userDet.id}`,
       requestOptions,
     )
       .then(response => response.json())
@@ -40,7 +40,9 @@ export default function Statistics() {
 
           setUserData(result.diabetesDetail);
           console.log(userData[0].measureValue);
-          setUserSituation(result.diabetesDetail[0].situation);
+          setUserSituation(
+            result.diabetesDetail[result.diabetesDetail.length - 1].situation,
+          );
         }
       })
       .catch(error => console.log('error', error));
