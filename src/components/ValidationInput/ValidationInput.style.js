@@ -22,7 +22,7 @@ export default StyleSheet.create({
     fontSize: 20,
   },
   btn: {
-    borderWidth: 15,
+    borderWidth: 5,
     borderRadius: 30,
     borderColor: 'yellow',
   },

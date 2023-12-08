@@ -5,32 +5,36 @@ import {useSelector} from 'react-redux';
 export default function Food() {
   const userDet = useSelector(state => state.user);
   const [foodList, setFoodList] = useState([{}]);
-  React.useEffect(() => {
-    var myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-    myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
-    myHeaders.append(
-      'Cookie',
-      'ARRAffinity=7728a9db7a843ce19ed47ff831421589468bd2f1f7c07638fcce4ad2da6697ff; ARRAffinitySameSite=7728a9db7a843ce19ed47ff831421589468bd2f1f7c07638fcce4ad2da6697ff',
-    );
 
-    var requestOptions = {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow',
-    };
+  async function GetData() {
+    try {
+      var myHeaders = new Headers();
+      myHeaders.append('Content-Type', 'application/json');
+      myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
 
-    fetch(
-      `https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/home/foodList?UserId=${userDet.id}`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(result => {
-        console.log(result);
-        setFoodList(result);
-      })
-      .catch(error => console.log('error', error));
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
+
+      const response = await fetch(
+        `https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/home/foodList?UserId=${userDet.id}`,
+        requestOptions,
+      );
+      const result = await response.json();
+      setFoodList(result);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+  const fetchData = React.useCallback(async () => {
+    await GetData();
   }, []);
+
+  React.useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const renderItem = ({item}) => (
     <View
@@ -39,13 +43,10 @@ export default function Food() {
         borderBottomWidth: 1,
         padding: 10,
       }}>
-      <Image
-        style={{width: 50, height: 50}}
-        uri={{uri: 'https://facebook.github.io/react/img/logo_og.png'}}
-        resizeMode={'cover'} // cover or contain its upto you view look
-      />
-      <Text style={{fontSize: 18, fontWeight: 'bold'}}>{item.foodName}</Text>
-      <Text>Calories: {item.calories}</Text>
+      <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
+        {item.foodName}
+      </Text>
+      <Text style={{color: 'white'}}>Calories: {item.calories}</Text>
     </View>
   );
   return (
@@ -69,11 +70,7 @@ export default function Food() {
         </Text>
       </View>
       <View style={{flex: 0.6}}>
-        <FlatList
-          data={foodList}
-          keyExtractor={item => item.id}
-          renderItem={renderItem}
-        />
+        <FlatList data={foodList} renderItem={renderItem} />
       </View>
     </View>
   );

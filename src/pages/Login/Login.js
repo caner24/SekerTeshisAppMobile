@@ -15,6 +15,8 @@ export default function Login() {
   const dispatch = useDispatch();
   const [indicator, setIndicator] = React.useState(false);
   const [isForget, setForget] = React.useState(false);
+  const [token, setToken] = React.useState(false);
+  const [email, setEmail] = React.useState('');
   const handleUserLogin = user => {
     dispatch({type: 'LOGIN_USER', payload: {user}});
   };
@@ -85,7 +87,7 @@ export default function Login() {
     };
 
     fetch(
-      'https://sekerteshisappwebapi20231104135624.azurewebsites.net/api/account/forgottonPassword',
+      'https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/account/forgottonPassword',
       requestOptions,
     )
       .then(response => response.json())
@@ -97,6 +99,56 @@ export default function Login() {
             type: ALERT_TYPE.DANGER,
             title: 'Hata',
             textBody: result.Message,
+            button: 'kapat',
+          });
+        } else {
+          return Dialog.show({
+            type: ALERT_TYPE.SUCCESS,
+            title: 'Başarili',
+            textBody: result.message,
+            button: 'kapat',
+          });
+        }
+      })
+      .catch(error => console.log('error', error));
+    setToken(false);
+  }
+
+  function ResetPassword(tokenAdress, password) {
+    setIndicator(true);
+    var myHeaders = new Headers();
+    myHeaders.append('Content-Type', 'application/json');
+    myHeaders.append(
+      'Cookie',
+      'ARRAffinity=e262ff50b02bc79dfcf96feacb75832df6ff0f14dccff63ca6ee6cb3eb18fb7d; ARRAffinitySameSite=e262ff50b02bc79dfcf96feacb75832df6ff0f14dccff63ca6ee6cb3eb18fb7d',
+    );
+
+    var raw = JSON.stringify({
+      mail: email,
+      token: tokenAdress,
+      password: password,
+    });
+
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow',
+    };
+
+    fetch(
+      'https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/account/resetPassword',
+      requestOptions,
+    )
+      .then(response => response.json())
+      .then(result => {
+        setIndicator(false);
+        console.log(result);
+        if (!result.result.succeeded) {
+          return Dialog.show({
+            type: ALERT_TYPE.DANGER,
+            title: 'Hata',
+            textBody: 'Şifrenizi sıfırlarken bir hata meydana geldi !.',
             button: 'kapat',
           });
         } else {
@@ -121,12 +173,12 @@ export default function Login() {
                 backgroundColor: 'black',
                 display: 'flex',
                 justifyContent: 'center',
-                height: '55%',
+                height: '60%',
               }}>
               <Pressable
                 style={{
-                  width: '25%',
-                  borderWidth: 15,
+                  width: '20%',
+                  borderWidth: 5,
                   borderColor: 'yellow',
                   borderRadius: 30,
                 }}
@@ -143,12 +195,25 @@ export default function Login() {
               </Pressable>
               <View style={{marginTop: '10%'}}></View>
               {indicator && <ActivityIndicator size="large" color="#0000ff" />}
-              <ValidationInput
-                forgetEmail={true}
-                onSubmit={async (email, password) => {
-                  ForgetPassword(email);
-                }}
-              />
+
+              {token === false ? (
+                <ValidationInput
+                  forgetEmail={true}
+                  onSubmit={async (email, password) => {
+                    ForgetPassword(email);
+                    setEmail(email);
+                    setToken(true);
+                  }}
+                />
+              ) : (
+                <ValidationInput
+                  resetEmail={true}
+                  pType={true}
+                  onSubmit={async (token, password) => {
+                    ResetPassword(token, password);
+                  }}
+                />
+              )}
             </View>
           </Modal>
         )}
@@ -165,7 +230,7 @@ export default function Login() {
           <Pressable
             style={{
               marginTop: 10,
-              borderWidth: 15,
+              borderWidth: 5,
               borderRadius: 30,
               borderColor: 'yellow',
             }}
