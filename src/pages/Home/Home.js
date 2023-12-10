@@ -6,7 +6,6 @@ import {
   Pressable,
   ActivityIndicator,
   TouchableOpacity,
-  DevSettings,
 } from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
@@ -106,7 +105,7 @@ function HomeScreen() {
     };
 
     fetch(
-      `https://sekerteshisappwebapi20231104135624.azurewebsites.net/api/home/getCalculateStatus?Id=${userDet.id}`,
+      `https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/home/getCalculateStatus?Id=${userDet.id}`,
       requestOptions,
     )
       .then(response => response.json())
@@ -179,7 +178,7 @@ function HomeScreen() {
               SetSlider(val);
             }}
           />
-          <Text>{slider}</Text>
+          <Text style={{color: 'white'}}>{slider}</Text>
           <View
             style={{
               width: '100%',

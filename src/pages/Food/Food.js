@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {View, Text, FlatList} from 'react-native';
-import {Image} from 'react-native-svg';
 import {useSelector} from 'react-redux';
 export default function Food() {
   const userDet = useSelector(state => state.user);
@@ -11,7 +10,10 @@ export default function Food() {
       var myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
       myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
-
+      myHeaders.append(
+        'Cookie',
+        'ARRAffinity=e262ff50b02bc79dfcf96feacb75832df6ff0f14dccff63ca6ee6cb3eb18fb7d; ARRAffinitySameSite=e262ff50b02bc79dfcf96feacb75832df6ff0f14dccff63ca6ee6cb3eb18fb7d',
+      );
       var requestOptions = {
         method: 'GET',
         headers: myHeaders,

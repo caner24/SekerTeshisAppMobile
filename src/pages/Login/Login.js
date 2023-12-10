@@ -56,7 +56,11 @@ export default function Login() {
             button: 'kapat',
           });
         } else {
-          var data = {bearer: result.accesToken, id: result.userId};
+          var data = {
+            bearer: result.accesToken,
+            id: result.userId,
+            isAdmin: result.isAdmin,
+          };
           // await AsyncStorage.setItem('loginInfo', JSON.stringify(data));
           handleUserLogin(data);
         }

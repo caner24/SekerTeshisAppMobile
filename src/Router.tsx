@@ -6,6 +6,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import LoginScreen from './pages/Login/Login';
 import RegisterScreen from './pages/Register/Register';
 import HomeScreen from './pages/Home/Home';
+import AdminScreen from './pages/Admin/Admin';
 // import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useSelector} from 'react-redux';
 
@@ -64,7 +65,9 @@ export default function Router() {
         </Tab.Navigator>
       </NavigationContainer>
     );
-  } else {
+  } else if (!userLoginInfo.isAdmin) {
     return <HomeScreen />;
+  } else {
+    return <AdminScreen />;
   }
 }

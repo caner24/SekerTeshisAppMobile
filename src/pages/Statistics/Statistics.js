@@ -12,7 +12,10 @@ export default function Statistics() {
       var myHeaders = new Headers();
       myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
       myHeaders.append('Content-Type', 'application/json');
-
+      myHeaders.append(
+        'Cookie',
+        'ARRAffinity=e262ff50b02bc79dfcf96feacb75832df6ff0f14dccff63ca6ee6cb3eb18fb7d; ARRAffinitySameSite=e262ff50b02bc79dfcf96feacb75832df6ff0f14dccff63ca6ee6cb3eb18fb7d',
+      );
       var requestOptions = {
         method: 'GET',
         headers: myHeaders,
