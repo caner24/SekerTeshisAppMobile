@@ -30,7 +30,7 @@ export default function UserDetail() {
     };
 
     fetch(
-      `https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/admin/getUser?UserId=${id}`,
+      `https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/admin/getUser?UserId=${id}`,
       requestOptions,
     )
       .then(response => response.json())
@@ -153,6 +153,7 @@ export default function UserDetail() {
             fontWeight: 'bold',
             fontSize: 20,
             textAlign: 'center',
+            fontStyle: 'italic',
           }}>
           Kullaniciyi Getir
         </Text>

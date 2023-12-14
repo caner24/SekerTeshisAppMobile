@@ -21,7 +21,7 @@ export default function Food() {
       };
 
       const response = await fetch(
-        `https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/home/foodList?UserId=${userDet.id}`,
+        `https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/home/foodList?UserId=${userDet.id}`,
         requestOptions,
       );
       const result = await response.json();

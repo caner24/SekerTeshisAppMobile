@@ -42,7 +42,7 @@ export default function Login() {
     };
 
     await fetch(
-      'https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/account/login',
+      'https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/account/login',
       requestOptions,
     )
       .then(response => response.json())
@@ -91,7 +91,7 @@ export default function Login() {
     };
 
     fetch(
-      'https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/account/forgottonPassword',
+      'https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/account/forgottonPassword',
       requestOptions,
     )
       .then(response => response.json())
@@ -141,7 +141,7 @@ export default function Login() {
     };
 
     fetch(
-      'https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/account/resetPassword',
+      'https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/account/resetPassword',
       requestOptions,
     )
       .then(response => response.json())

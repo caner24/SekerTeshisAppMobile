@@ -62,7 +62,7 @@ function HomeScreen() {
 
     try {
       const response = await fetch(
-        'https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/home/calculateSugar',
+        'https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/home/calculateSugar',
         requestOptions,
       );
 
@@ -105,7 +105,7 @@ function HomeScreen() {
     };
 
     fetch(
-      `https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/home/getCalculateStatus?Id=${userDet.id}`,
+      `https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/home/getCalculateStatus?Id=${userDet.id}`,
       requestOptions,
     )
       .then(response => response.json())

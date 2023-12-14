@@ -23,7 +23,7 @@ export default function Statistics() {
       };
 
       const response = await fetch(
-        `https://sekerteshisappwebapi20231207213233.azurewebsites.net/api/home/getLast7Diabetes?UserId=${userDet.id}`,
+        `https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/home/getLast7Diabetes?UserId=${userDet.id}`,
         requestOptions,
       );
       const result = await response.json();
