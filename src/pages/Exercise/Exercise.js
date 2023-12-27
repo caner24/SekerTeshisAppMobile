@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {View, Text, FlatList} from 'react-native';
-import {Image} from 'react-native-svg';
 import {useSelector} from 'react-redux';
 export default function Food() {
   const userDet = useSelector(state => state.user);

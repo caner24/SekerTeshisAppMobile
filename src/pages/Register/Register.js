@@ -2,17 +2,14 @@ import React from 'react';
 import {View, Text, ActivityIndicator} from 'react-native';
 import ValidationInput from '../../components/ValidationInput/ValidationInput';
 import styles from './Register.style';
-import axios from 'axios';
 import {
   ALERT_TYPE,
   Dialog,
   AlertNotificationRoot,
-  Toast,
 } from 'react-native-alert-notification';
 
 export default function Register() {
   const [indicator, setIndicator] = React.useState(false);
-  const [badge, showBadge] = React.useState(false);
 
   async function RegisterUser(userEmail, userPassword) {
     setIndicator(true);

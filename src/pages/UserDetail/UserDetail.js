@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  Pressable,
-  Alert,
-  Button,
-  FlatList,
-} from 'react-native';
+import {View, Text, TextInput, Pressable, Alert, FlatList} from 'react-native';
 import {useSelector} from 'react-redux';
 export default function UserDetail() {
   const [userData, setUserData] = React.useState([]);
