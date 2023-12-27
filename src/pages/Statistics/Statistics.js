@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, Dimensions} from 'react-native';
+import {View, Text, Dimensions, Pressable} from 'react-native';
 import {LineChart} from 'react-native-chart-kit';
 import {useSelector} from 'react-redux';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default function Statistics() {
   const [userSituation, setUserSituation] = React.useState('BELİRSİZ');
@@ -23,6 +24,7 @@ export default function Statistics() {
         `https://sekerteshisappwebapi20231224223342.azurewebsites.net/api/home/getLast7Diabetes?UserId=${userDet.id}`,
         requestOptions,
       );
+
       const result = await response.json();
       setUserData(result.diabetesDetail);
       if (result.diabetesDetail.length > 0) {
@@ -44,6 +46,19 @@ export default function Statistics() {
 
   return (
     <View style={{flex: 1, backgroundColor: 'black'}}>
+      <View
+        style={{
+          display: 'flex',
+          alignItems: 'flex-end',
+        }}>
+        <Pressable
+          onPress={async () => {
+            await GetData();
+          }}
+          style={{backgroundColor: 'yellow', borderRadius: 5}}>
+          <Ionicons name="refresh" color={'black'} size={35} />
+        </Pressable>
+      </View>
       <Text
         style={{
           color: 'white',

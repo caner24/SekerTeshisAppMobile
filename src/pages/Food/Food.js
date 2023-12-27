@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
-import {View, Text, FlatList} from 'react-native';
+import {View, Text, FlatList, Pressable} from 'react-native';
 import {useSelector} from 'react-redux';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 export default function Food() {
   const userDet = useSelector(state => state.user);
   const [foodList, setFoodList] = useState([{}]);
@@ -55,6 +56,20 @@ export default function Food() {
         alignItems: 'center',
         backgroundColor: 'black',
       }}>
+      <View
+        style={{
+          alignSelf: 'flex-end',
+          display: 'flex',
+          alignItems: 'flex-end',
+        }}>
+        <Pressable
+          onPress={async () => {
+            await GetData();
+          }}
+          style={{backgroundColor: 'yellow', borderRadius: 5}}>
+          <Ionicons name="refresh" color={'black'} size={35} />
+        </Pressable>
+      </View>
       <View style={{flex: 0.4}}>
         <Text
           style={{
@@ -67,6 +82,18 @@ export default function Food() {
           Yemek Listesi
         </Text>
       </View>
+      {foodList.StatusCode == '500' && (
+        <View
+          style={{
+            flex: 1,
+            borderBottomWidth: 1,
+            padding: 10,
+          }}>
+          <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
+            Ölçüm değeriniz bulunmamaktadır !.
+          </Text>
+        </View>
+      )}
       <View style={{flex: 0.6}}>
         <FlatList data={foodList} renderItem={renderItem} />
       </View>
