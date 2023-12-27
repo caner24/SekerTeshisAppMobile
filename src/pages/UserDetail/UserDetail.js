@@ -18,10 +18,6 @@ export default function UserDetail() {
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
-    myHeaders.append(
-      'Cookie',
-      'ARRAffinity=e262ff50b02bc79dfcf96feacb75832df6ff0f14dccff63ca6ee6cb3eb18fb7d; ARRAffinitySameSite=e262ff50b02bc79dfcf96feacb75832df6ff0f14dccff63ca6ee6cb3eb18fb7d',
-    );
 
     var requestOptions = {
       method: 'GET',
@@ -30,7 +26,7 @@ export default function UserDetail() {
     };
 
     fetch(
-      `https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/admin/getUser?UserId=${id}`,
+      `https://sekerteshisappwebapi20231224223342.azurewebsites.net/api/admin/getUser?UserId=${id}`,
       requestOptions,
     )
       .then(response => response.json())
@@ -135,7 +131,7 @@ export default function UserDetail() {
 
       <TextInput
         onChangeText={text => setUserId(text)}
-        style={{borderRadius: 10, backgroundColor: 'white'}}
+        style={{borderRadius: 10, backgroundColor: 'white', color: 'black'}}
         placeholder="Kullanici Id"></TextInput>
       <Pressable
         style={{

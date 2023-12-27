@@ -25,10 +25,6 @@ export default function Login() {
     setIndicator(true);
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-    myHeaders.append(
-      'Cookie',
-      'ARRAffinity=4b3e9d7243043145f30ef214452b71163b8defc4e171d81090f8c904e96ebe98; ARRAffinitySameSite=4b3e9d7243043145f30ef214452b71163b8defc4e171d81090f8c904e96ebe98',
-    );
 
     var raw = JSON.stringify({
       email: userEmail,
@@ -42,7 +38,7 @@ export default function Login() {
     };
 
     await fetch(
-      'https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/account/login',
+      'https://sekerteshisappwebapi20231224223342.azurewebsites.net/api/account/login',
       requestOptions,
     )
       .then(response => response.json())
@@ -74,10 +70,6 @@ export default function Login() {
     setIndicator(true);
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-    myHeaders.append(
-      'Cookie',
-      'ARRAffinity=4b3e9d7243043145f30ef214452b71163b8defc4e171d81090f8c904e96ebe98; ARRAffinitySameSite=4b3e9d7243043145f30ef214452b71163b8defc4e171d81090f8c904e96ebe98',
-    );
 
     var raw = JSON.stringify({
       mailAdress: email,
@@ -91,7 +83,7 @@ export default function Login() {
     };
 
     fetch(
-      'https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/account/forgottonPassword',
+      'https://sekerteshisappwebapi20231224223342.azurewebsites.net/api/account/forgottonPassword',
       requestOptions,
     )
       .then(response => response.json())

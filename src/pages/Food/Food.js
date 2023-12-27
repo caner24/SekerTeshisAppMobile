@@ -10,10 +10,6 @@ export default function Food() {
       var myHeaders = new Headers();
       myHeaders.append('Content-Type', 'application/json');
       myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
-      myHeaders.append(
-        'Cookie',
-        'ARRAffinity=e262ff50b02bc79dfcf96feacb75832df6ff0f14dccff63ca6ee6cb3eb18fb7d; ARRAffinitySameSite=e262ff50b02bc79dfcf96feacb75832df6ff0f14dccff63ca6ee6cb3eb18fb7d',
-      );
       var requestOptions = {
         method: 'GET',
         headers: myHeaders,
@@ -21,7 +17,7 @@ export default function Food() {
       };
 
       const response = await fetch(
-        `https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/home/foodList?UserId=${userDet.id}`,
+        `https://sekerteshisappwebapi20231224223342.azurewebsites.net/api/home/foodList?UserId=${userDet.id}`,
         requestOptions,
       );
       const result = await response.json();

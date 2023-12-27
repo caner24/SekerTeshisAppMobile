@@ -8,7 +8,8 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import styles from './Admin.style';
 const Tab = createBottomTabNavigator();
-
+import {useDispatch} from 'react-redux';
+import Restart from 'react-native-restart';
 export default function Admin() {
   const userDet = useSelector(state => state.user);
 
@@ -76,13 +77,10 @@ export default function Admin() {
   }
 
   function HomeScreen({navigation}) {
+    const dispatch = useDispatch();
     function GetDatas() {
       var myHeaders = new Headers();
       myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
-      myHeaders.append(
-        'Cookie',
-        'ARRAffinity=aa5da807acbfc559bca55ef24c1fd7d38ec19e63d1268fa63fb6c8ab6fa58858; ARRAffinitySameSite=aa5da807acbfc559bca55ef24c1fd7d38ec19e63d1268fa63fb6c8ab6fa58858',
-      );
 
       var requestOptions = {
         method: 'GET',
@@ -91,7 +89,7 @@ export default function Admin() {
       };
 
       fetch(
-        `https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/admin/userStatics?DiabetesName=${type}&OrderBy=${orderBy}`,
+        `https://sekerteshisappwebapi20231224223342.azurewebsites.net/api/admin/userStatics?DiabetesName=${type}&OrderBy=${orderBy}`,
         requestOptions,
       )
         .then(response => response.json())
@@ -109,7 +107,25 @@ export default function Admin() {
     return (
       <View style={{flex: 1, backgroundColor: 'black'}}>
         <View style={{flex: 0.2}}>
-          <Text style={styles.main_text}>Kullanici Bilgileri</Text>
+          <Text style={styles.main_text}>Ölçümler</Text>
+        </View>
+        <View
+          style={{
+            display: 'flex',
+            alignItems: 'flex-end',
+          }}>
+          <Pressable
+            onPress={(user = null) => {
+              dispatch({type: 'LOGIN_USER', payload: {user}});
+              Restart.Restart();
+            }}
+            style={{backgroundColor: 'yellow', borderRadius: 5}}>
+            <MaterialCommunityIcons
+              name="exit-to-app"
+              color={'black'}
+              size={35}
+            />
+          </Pressable>
         </View>
         <View style={styles.data_shape_container}>
           <Text style={{flex: 0.2, color: 'white'}}>Tip</Text>
@@ -117,7 +133,12 @@ export default function Admin() {
             editable={true}
             onChangeText={setType}
             defaultValue={type}
-            style={{flex: 0.8, backgroundColor: 'yellow', borderRadius: 10}}
+            style={{
+              flex: 0.8,
+              backgroundColor: 'yellow',
+              borderRadius: 10,
+              color: 'black',
+            }}
           />
         </View>
         <View style={styles.data_shape_container}>
@@ -125,7 +146,12 @@ export default function Admin() {
           <TextInput
             onChangeText={text => setOrderBy(text)}
             defaultValue={orderBy}
-            style={{flex: 0.8, backgroundColor: 'yellow', borderRadius: 10}}
+            style={{
+              flex: 0.8,
+              backgroundColor: 'yellow',
+              borderRadius: 10,
+              color: 'black',
+            }}
           />
         </View>
         <View

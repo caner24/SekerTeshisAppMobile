@@ -23,10 +23,12 @@ import {
   Dialog,
   AlertNotificationRoot,
 } from 'react-native-alert-notification';
+import {useDispatch} from 'react-redux';
+import Restart from 'react-native-restart';
 
 const Tab = createBottomTabNavigator();
 
-function HomeScreen() {
+function HomeScreen({navigation}) {
   var [slider, SetSlider] = React.useState('0');
   var [isDisabled, SetDisabled] = React.useState(false);
   var [loading, setLoading] = React.useState(true);
@@ -37,15 +39,12 @@ function HomeScreen() {
   var [calculate, setCalculate] = React.useState(false);
   const userDet = useSelector(state => state.user);
 
+  const dispatch = useDispatch();
   async function CalculateSugar() {
     setCalculate(true);
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
-    myHeaders.append(
-      'Cookie',
-      'ARRAffinity=4b3e9d7243043145f30ef214452b71163b8defc4e171d81090f8c904e96ebe98; ARRAffinitySameSite=4b3e9d7243043145f30ef214452b71163b8defc4e171d81090f8c904e96ebe98',
-    );
 
     var raw = JSON.stringify({
       diabetesId: userDet.id,
@@ -62,7 +61,7 @@ function HomeScreen() {
 
     try {
       const response = await fetch(
-        'https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/home/calculateSugar',
+        'https://sekerteshisappwebapi20231224223342.azurewebsites.net/api/home/calculateSugar',
         requestOptions,
       );
 
@@ -75,7 +74,7 @@ function HomeScreen() {
       return Dialog.show({
         type: ALERT_TYPE.SUCCESS,
         title: 'Alindi',
-        textBody: 'Şeker ölçümünüz alindi !.',
+        textBody: `Şeker ölçümünüz alindi !. sonuc : ${response.type}`,
         button: 'kapat',
       });
     } catch (error) {
@@ -93,10 +92,6 @@ function HomeScreen() {
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
     myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
-    myHeaders.append(
-      'Cookie',
-      'ARRAffinity=4b3e9d7243043145f30ef214452b71163b8defc4e171d81090f8c904e96ebe98; ARRAffinitySameSite=4b3e9d7243043145f30ef214452b71163b8defc4e171d81090f8c904e96ebe98',
-    );
 
     var requestOptions = {
       method: 'GET',
@@ -105,7 +100,7 @@ function HomeScreen() {
     };
 
     fetch(
-      `https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/home/getCalculateStatus?Id=${userDet.id}`,
+      `https://sekerteshisappwebapi20231224223342.azurewebsites.net/api/home/getCalculateStatus?Id=${userDet.id}`,
       requestOptions,
     )
       .then(response => response.json())
@@ -133,6 +128,25 @@ function HomeScreen() {
   return (
     <AlertNotificationRoot>
       <View style={{backgroundColor: 'black', flex: 1}}>
+        <View
+          style={{
+            display: 'flex',
+            alignItems: 'flex-end',
+          }}>
+          <Pressable
+            onPress={(user = null) => {
+              dispatch({type: 'LOGIN_USER', payload: {user}});
+              Restart.Restart();
+            }}
+            style={{backgroundColor: 'yellow', borderRadius: 5}}>
+            <MaterialCommunityIcons
+              name="exit-to-app"
+              color={'black'}
+              size={35}
+            />
+          </Pressable>
+        </View>
+
         <View>
           <Text
             style={{
@@ -170,7 +184,7 @@ function HomeScreen() {
               backgroundColor: 'black',
             }}
             minimumValue={0}
-            maximumValue={126}
+            maximumValue={200}
             thumbTintColor="white"
             minimumTrackTintColor="yellow"
             maximumTrackTintColor="white"

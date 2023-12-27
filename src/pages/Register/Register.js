@@ -18,11 +18,6 @@ export default function Register() {
     setIndicator(true);
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-    myHeaders.append(
-      'Cookie',
-      'ARRAffinity=4b3e9d7243043145f30ef214452b71163b8defc4e171d81090f8c904e96ebe98; ARRAffinitySameSite=4b3e9d7243043145f30ef214452b71163b8defc4e171d81090f8c904e96ebe98',
-    );
-
     var raw = JSON.stringify({
       email: userEmail,
       password: userPassword,
@@ -36,7 +31,7 @@ export default function Register() {
     };
 
     await fetch(
-      'https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/account/register',
+      'https://sekerteshisappwebapi20231224223342.azurewebsites.net/api/account/register',
       requestOptions,
     )
       .then(response => response.json())

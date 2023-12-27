@@ -3,7 +3,6 @@ export default function reducers(state, action) {
     case 'LOGIN_USER':
       const {user} = action.payload;
       return {...state, user};
-
     default:
       return state;
   }

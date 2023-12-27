@@ -12,10 +12,7 @@ export default function Statistics() {
       var myHeaders = new Headers();
       myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
       myHeaders.append('Content-Type', 'application/json');
-      myHeaders.append(
-        'Cookie',
-        'ARRAffinity=e262ff50b02bc79dfcf96feacb75832df6ff0f14dccff63ca6ee6cb3eb18fb7d; ARRAffinitySameSite=e262ff50b02bc79dfcf96feacb75832df6ff0f14dccff63ca6ee6cb3eb18fb7d',
-      );
+
       var requestOptions = {
         method: 'GET',
         headers: myHeaders,
@@ -23,7 +20,7 @@ export default function Statistics() {
       };
 
       const response = await fetch(
-        `https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/home/getLast7Diabetes?UserId=${userDet.id}`,
+        `https://sekerteshisappwebapi20231224223342.azurewebsites.net/api/home/getLast7Diabetes?UserId=${userDet.id}`,
         requestOptions,
       );
       const result = await response.json();
@@ -87,19 +84,19 @@ export default function Statistics() {
               {
                 data: [
                   userData.length >= 1
-                    ? userData[userData.length - 5].measureValue
+                    ? userData[userData.length - 1].measureValue
                     : 0,
                   userData.length >= 2
-                    ? userData[userData.length - 4].measureValue
+                    ? userData[userData.length - 2].measureValue
                     : 0,
                   userData.length >= 3
                     ? userData[userData.length - 3].measureValue
                     : 0,
                   userData.length >= 4
-                    ? userData[userData.length - 2].measureValue
+                    ? userData[userData.length - 4].measureValue
                     : 0,
                   userData.length >= 5
-                    ? userData[userData.length - 1].measureValue
+                    ? userData[userData.length - 5].measureValue
                     : 0,
                 ],
               },
