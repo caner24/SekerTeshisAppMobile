@@ -69,12 +69,15 @@ function HomeScreen({navigation}) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
+      const data = await response.json();
+      console.log(data);
       SetDisabled(true);
       setCalculate(false);
+      setLockDown(true);
       return Dialog.show({
         type: ALERT_TYPE.SUCCESS,
         title: 'Alindi',
-        textBody: `Şeker ölçümünüz alindi !. sonuc : ${response.type}`,
+        textBody: `Şeker ölçümünüz alindi !. sonuc : ${data.type}`,
         button: 'kapat',
       });
     } catch (error) {
@@ -202,7 +205,7 @@ function HomeScreen({navigation}) {
             }}>
             <TouchableOpacity
               onPress={() => {
-                if (hungry == 'yellow') {
+                if (hungry === 'yellow') {
                   setHungry('white');
                   setFull('yellow');
                 } else setHungry('yellow');
@@ -219,7 +222,7 @@ function HomeScreen({navigation}) {
             </TouchableOpacity>
             <Pressable
               onPress={() => {
-                if (full == 'yellow') {
+                if (full === 'yellow') {
                   setFull('white');
                   setHungry('yellow');
                 } else setFull('yellow');

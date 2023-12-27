@@ -114,10 +114,6 @@ export default function Login() {
     setIndicator(true);
     var myHeaders = new Headers();
     myHeaders.append('Content-Type', 'application/json');
-    myHeaders.append(
-      'Cookie',
-      'ARRAffinity=e262ff50b02bc79dfcf96feacb75832df6ff0f14dccff63ca6ee6cb3eb18fb7d; ARRAffinitySameSite=e262ff50b02bc79dfcf96feacb75832df6ff0f14dccff63ca6ee6cb3eb18fb7d',
-    );
 
     var raw = JSON.stringify({
       mail: email,
@@ -133,7 +129,7 @@ export default function Login() {
     };
 
     fetch(
-      'https://sekerteshisappwebapi20231213195554.azurewebsites.net/api/account/resetPassword',
+      'https://sekerteshisappwebapi20231224223342.azurewebsites.net/api/account/resetPassword',
       requestOptions,
     )
       .then(response => response.json())
