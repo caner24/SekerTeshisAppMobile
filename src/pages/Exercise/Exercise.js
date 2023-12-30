@@ -45,7 +45,7 @@ export default function Food() {
       <Text style={{color: 'white', fontSize: 18, fontWeight: 'bold'}}>
         {item.id % 2 === 0 ? 'Öğle Sporu' : 'Akşam Sporu'}
       </Text>
-      <Text style={{color: 'white'}}>Calories: {item.exercisesType}</Text>
+      <Text style={{color: 'white'}}>Spor: {item.exercisesType}</Text>
     </View>
   );
   return (
