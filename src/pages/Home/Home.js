@@ -91,30 +91,42 @@ function HomeScreen({navigation}) {
     }
   }
 
-  React.useEffect(() => {
-    var myHeaders = new Headers();
-    myHeaders.append('Content-Type', 'application/json');
-    myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
+  async function GetData() {
+    try {
+      var myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${userDet.bearer}`);
 
-    var requestOptions = {
-      method: 'GET',
-      headers: myHeaders,
-      redirect: 'follow',
-    };
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow',
+      };
 
-    fetch(
-      `https://sekerteshisappwebapi20231224223342.azurewebsites.net/api/home/getCalculateStatus?Id=${userDet.id}`,
-      requestOptions,
-    )
-      .then(response => response.json())
-      .then(result => {
-        console.log(result);
-        setLockDown(result.isLockDown);
-        if (result.isLockDown) SetDisabled(true);
-      })
-      .catch(error => console.log('error', error));
-    setLoading(false);
+      const response = await fetch(
+        `https://sekerteshisappwebapi20231224223342.azurewebsites.net/api/home/getCalculateStatus?Id=${userDet.id}`,
+        requestOptions,
+      );
+
+      const result = await response.json();
+      console.log(result);
+      setLockDown(result.isLockDown);
+      if (result.isLockDown) {
+        SetDisabled(true);
+      }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+  const fetchData = React.useCallback(async () => {
+    await GetData();
   }, []);
+
+  React.useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
   if (loading) {
     return (
       <View
